@@ -1,7 +1,7 @@
 # Flashcards
 
 ## Stage 1/7: Stage one, card one
-Description
+### Description
 A flashcard is a digital or paper card that contains a term on one side, and a definition, translation, or explanation of that term on the other. Flashcards are often used for learning foreign languages and are an effective study technique for many people.
 
 flashcard application
@@ -10,7 +10,7 @@ An example of a flashcard. The upper part is the term the user is being asked, t
 
 For this project, we’ll refer to the text on the front of the card as the term, and the text on the back will be the definition. There won't actually be any visual "front" and "back" side of a card: it'll all be done through sequential text. We'll ask the user for the definitions of the terms they previously entered, and check whether the given answers are correct. While developing this application, you will not only learn some programming but also save paper!
 
-Objectives
+### Objectives
 Your program should read two lines from the console, a term, and a definition, that represent a card.
 
 Implement a program that outputs 4 lines:
@@ -43,12 +43,12 @@ Definition:
 
 
 ## Stage 2/7: What’s on the card?
-Description
+### Description
 In Stage 1, we learnt how to create a dynamic flashcard from user's input. Let’s add a primitive guessing mechanism as well so that the user can check how well they remember the definitions.
 
 For this stage you'll extend the flashcard-creation mechanism implemented in Stage 1 and add a functionality to check the user's answer on top of it.
 
-Objectives
+### Objectives
 Similar to Stage 1, your program should read two lines from the console, a term, and a definition, that represent a card. However there's no need to print Card: or Definition: in this stage.
 
 After that, the user inputs a line as an answer (a definition of the term on the card). Compare the user's answer with the correct definition and print the result.
@@ -84,14 +84,14 @@ Output:
 Your answer is wrong...
 
 ## Stage 3/7: Make it your own
-Description
+### Description
 Your program can only entertain users with one card, which isn’t really fun. Let's take our game to the next level and implement a set of flashcards.
 
 Let the user decide how many cards they would like to make. First, ask the player to enter the desired number of cards. Then, ask them to input the term and the definition for every flashcard.
 
 In the end, once all flashcards have been defined and saved, your program is finally ready to be used as a game! Question the player about all the new words they have entered. The program should give the term and ask for its definition.
 
-Objectives
+### Objectives
 Your program should do the following:
 
 Get the number of flashcards the user would like to create. To do that, print the line Input the number of cards: as a prompt for the user, and then read the number from the next line.
@@ -120,14 +120,14 @@ Note that all your outputs and user inputs should be on separate lines.
 
 
 ## Stage 4/7: A good stack
-Description
+### Description
 While learning new things, we may mix things up and use the right definition for the wrong term. Let's inform our players if they enter the definition that is wrong for the requested flashcard but correct for another flashcard in our set.
 
 Also, it might be very confusing if our flashcard set contains cards with the same term or definition, since seeing only one side of the card we can't tell them apart. Let's add a constraint: the user must add only unique terms and definitions. To do this, you need to find a way to check whether the set contains a particular term or definition and get the term by the definition, and vice versa.
 
 These two features will definitely improve our game!
 
-Objectives
+### Objectives
 Modify your program to behave the following way:
 
 When the user tries to add a duplicate term, forbid it and output the message The term "term" already exists. Try again: using the term instead of "term". Ask for the term until the user inputs a unique term.
@@ -179,7 +179,7 @@ Wrong. The right answer is "a part of the body where the foot and the leg meet".
 Note that all your outputs and user inputs should be on separate lines.
 
 ## Stage 5/7: Menu, please!
-Description
+### Description
 Our users cannot create new flashcards all the time. It seems like a good idea to keep old but useful cards in storage so we can use them later. Let's try to do that!
 
 In this stage, you will improve the application's interactivity by having it ask the user for an action and perform it. Also, it will provide additional functionality allowing the user to store flashcards in files for future use.
@@ -196,7 +196,7 @@ You can use any format of separating to store cards in a file; tests do not chec
 
 When you load flashcards from a file, you shouldn't erase the cards that aren't in the file. If the imported flashcard already exists, update its definition in the program memory. There won't be any conflict with definitions in the tests.
 
-Objectives
+### Objectives
 Print the message Input the action (add, remove, import, export, ask, exit): each time the user is prompted for their next action. The action is read from the next line, processed, and the message is output again until the user decides to exit the program.
 
 The program's behavior depends on the action the user inputs:
@@ -341,3 +341,88 @@ Input the action (add, remove, import, export, ask, exit):
 > exit
 Bye bye!
 Note that all your outputs and user inputs should be on separate lines.
+
+
+## Stage 6/7: Statistics
+### Description
+While studying, it may be very helpful to pay more attention to challenging parts where you make the most mistakes. In this stage, you will add some statistics features to your program so that the users can track their progress.
+
+Implement the following additional actions:
+
+save the application log to the given file: log
+print the term or terms that the user makes most mistakes with: hardest card
+erase the mistake count for all cards: reset stats
+Remember that now you need to store three items (term, definition, mistakes) instead of two (term, definition).
+
+### Objectives
+Print the message Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats): each time the user is prompted for their next action. The action is read from the next line, processed, and the message is output again until the user decides to exit the program.
+
+The program's behavior depends on the user's input action:
+
+log — ask the user where to save the log with the message File name:, save all the lines that have been input/output to the console to the file, and print the message The log has been saved. Don't clear the log after saving it to the file.
+hardest card — print a string that contains the term of the card with the highest number of wrong answers, for example, The hardest card is "term". You have N errors answering it. If there are several cards with the highest number of wrong answers, print all of the terms: The hardest cards are "term_1", "term_2". If there are no cards with errors in the user's answers, print the message There are no cards with errors.
+reset stats — set the count of mistakes to 0 for all the cards and output the message Card statistics have been reset.
+Update your import and export actions from the previous stage, so that the error count for each flashcard is also imported and exported.
+
+Example
+The symbol > represents the user input. Note that it's not part of the input.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+> hardest card
+There are no cards with errors.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+> import
+File name:
+> capitals.txt
+28 cards have been loaded.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+> hardest card
+The hardest card is "France". You have 10 errors answering it.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+> ask
+How many times to ask?
+> 1
+Print the definition of "Russia":
+> Paris
+Wrong. The right answer is "Moscow", but your definition is correct for "France" card.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+> hardest card
+The hardest cards are "Russia", "France". You have 10 errors answering them.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+> reset stats
+Card statistics have been reset.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+> hardest card
+There are no cards with errors.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+> log
+File name:
+> todayLog.txt
+The log has been saved.
+
+Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+> exit
+Bye bye!
+Note that all your outputs and user inputs should be on separate lines.
+
+## Stage 7/7: IMPORTant
+### Description
+Files are used to save progress and restore it the next time the user runs the program. It's tedious to print the actions manually. Sometimes you can just forget to do it! Let's add run arguments that define which file to read at the start and which file to save at the exit.
+
+### Objectives
+- When provided with command-line arguments, your program should do the following:
+
+If -import IMPORT is passed, where IMPORT is the file name, read the initial card set from the external file and print the message n cards have been loaded. as the first line of the output, where n is the number of cards loaded from the external file. If such an argument is not provided, the set of cards should initially be empty and no message about card loading should be output.
+If -export EXPORT is passed, where EXPORT is the file name, write all cards that are in the program memory into this file after the user has entered exit, and the last line of the output should be n cards have been saved., where n is the number of flashcards in the set.
+Run arguments examples
+java Flashcards -import derivatives.txt
+java Flashcards -export animals.txt
+java Flashcards -import words13june.txt -export words14june.txt
+java Flashcards -export vocab.txt -import vocab.txt 

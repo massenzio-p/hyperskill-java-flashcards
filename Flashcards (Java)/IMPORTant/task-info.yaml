@@ -1066,6 +1066,250 @@ files:
     \                \"Moscow\",\n                \"London\",\n                \"\
     Abuja\",\n                \"Berlin\"\n        );\n    }\n    \n}\n"
     learner_created: false
+  - name: src/flashcards/log/DefaultLogger.java
+    visible: true
+    text: |
+      package flashcards.log;
+      
+      class DefaultLogger implements Logger {
+      
+          private final StringBuilder sb = new StringBuilder();
+      
+          @Override
+          public String getLog() {
+              return sb.toString();
+          }
+      
+          @Override
+          public void print(String menuMessage) {
+              System.out.print(menuMessage);
+              sb.append(menuMessage);
+          }
+      
+          @Override
+          public String saveln(String s) {
+              sb.append(s);
+              ln();
+              return s;
+          }
+      
+          @Override
+          public void ln() {
+              this.sb.append("\n");
+          }
+      
+          @Override
+          public void println(String s) {
+              System.out.println(s);
+              sb.append(s).append("\n");
+          }
+      }
+    learner_created: true
+  - name: src/flashcards/command/ResetStatsCommand.java
+    visible: true
+    text: |
+      package flashcards.command;
+      
+      import flashcards.CardStorage;
+      import flashcards.log.Logger;
+      
+      class ResetStatsCommand extends AbstractCommand {
+      
+      
+          public ResetStatsCommand(CardStorage cardStorage, Logger logger) {
+              super(cardStorage, logger);
+          }
+      
+          @Override
+          public int execute(Object... args) {
+              cardStorage.resetAllScore();
+              logger.println("Card statistics have been reset.");
+              return 0;
+          }
+      }
+    learner_created: true
+  - name: src/flashcards/command/LogCommand.java
+    visible: true
+    text: |
+      package flashcards.command;
+      
+      import flashcards.CardStorage;
+      import flashcards.log.Logger;
+      
+      import java.io.File;
+      import java.io.FileWriter;
+      import java.io.IOException;
+      import java.util.Scanner;
+      
+      class LogCommand extends AbstractCommand {
+      
+          protected LogCommand(Scanner scanner, CardStorage cardStorage, Logger logger) {
+              super(scanner, cardStorage, logger);
+          }
+      
+          @Override
+          public int execute(Object... args) {
+              logger.println("File name:");
+              String filename = logger.saveln(scanner.nextLine());
+              File logfile = new File(filename);
+      
+              try {
+                  writeLog(logfile);
+              } catch (IOException e) {
+                  throw new RuntimeException(e);
+              }
+      
+              logger.println("The log has been saved.");
+              return 0;
+          }
+      
+          private void writeLog(File logfile) throws IOException {
+              logfile.createNewFile();
+              try (var writer = new FileWriter(logfile)) {
+                  writer.append(logger.getLog());
+                  writer.flush();
+              }
+          }
+      }
+    learner_created: true
+  - name: src/flashcards/Score.java
+    visible: true
+    text: |
+      package flashcards;
+      
+      public class Score {
+      
+          private int errorsCount = 0;
+      
+          public Score(int errorsCount) {
+              this.errorsCount = errorsCount;
+          }
+      
+          public void setErrorsCount(int errorsCount) {
+              this.errorsCount = errorsCount;
+          }
+      
+          public int getErrorsCount() {
+              return errorsCount;
+          }
+      
+          public void incrementErrorCount() {
+              errorsCount++;
+          }
+      }
+    learner_created: true
+  - name: src/flashcards/command/HardestCardCommand.java
+    visible: true
+    text: |
+      package flashcards.command;
+      
+      import flashcards.Card;
+      import flashcards.CardStorage;
+      import flashcards.log.Logger;
+      
+      import java.util.ArrayList;
+      import java.util.Collection;
+      import java.util.List;
+      import java.util.Scanner;
+      import java.util.stream.Collectors;
+      
+      class HardestCardCommand extends AbstractCommand {
+      
+          protected HardestCardCommand(CardStorage cardStorage, Logger logger) {
+              super(cardStorage, logger);
+          }
+      
+          @Override
+          public int execute(Object... args) {
+              Collection<Card> hardestCards = findHardestCards();
+              String msgFrame = "There are no cards with errors.\n";
+              if (hardestCards != null) {
+                  msgFrame = String.format(
+                          "The hardest card%s %s. You have %d errors answering %s.%n",
+                          hardestCards.size() > 1 ? "s are" : " is",
+                          hardestCards.stream()
+                                  .map(card -> String.format("\"%s\"", card.term()))
+                                  .collect(Collectors.joining(", ")),
+                          hardestCards.stream().findFirst().get().score().getErrorsCount(),
+                          hardestCards.size() > 1 ? "them" : "it"
+                  );
+              }
+              logger.print(msgFrame);
+              return 0;
+          }
+      
+          private Collection<Card> findHardestCards() {
+              int maxErrors = 0;
+              int currErrors;
+              List<Card> maxErrorCards = new ArrayList<>();
+      
+              for (var card : this.cardStorage.getAllCards()) {
+                  currErrors = card.score().getErrorsCount();
+                  if (currErrors < 1) continue;
+      
+                  if (currErrors > maxErrors) {
+                      maxErrors = currErrors;
+                      maxErrorCards.clear();
+                      maxErrorCards.add(card);
+                  } else if (currErrors == maxErrors) {
+                      maxErrorCards.add(card);
+                  }
+              }
+      
+              if (maxErrorCards.isEmpty()) return null;
+              return maxErrorCards;
+          }
+      }
+    learner_created: true
+  - name: src/flashcards/command/AbstractCommand.java
+    visible: true
+    text: |
+      package flashcards.command;
+      
+      import flashcards.CardStorage;
+      import flashcards.log.Logger;
+      
+      import java.util.Scanner;
+      
+      public abstract class AbstractCommand implements Command {
+      
+          protected final Scanner scanner;
+          protected final CardStorage cardStorage;
+          protected final Logger logger;
+      
+          protected AbstractCommand(Scanner scanner, CardStorage cardStorage, Logger logger) {
+              this.scanner = scanner;
+              this.cardStorage = cardStorage;
+              this.logger = logger;
+          }
+      
+          public AbstractCommand(CardStorage cardStorage, Logger logger) {
+              this.scanner = null;
+              this.cardStorage = cardStorage;
+              this.logger = logger;
+          }
+      }
+    learner_created: true
+  - name: src/flashcards/log/Logger.java
+    visible: true
+    text: "package flashcards.log;\n\npublic interface Logger {\n\n    String getLog();\n\
+    \    \n    static Logger getDefault() {\n        return new DefaultLogger();\n\
+    \    }\n\n    void print(String menuMessage);\n\n    String saveln(String s);\n\
+    \n    void ln();\n\n    void println(String s);\n}\n"
+    learner_created: true
+  - name: src/flashcards/CardFilePorter.java
+    visible: true
+    learner_created: true
+  - name: src/flashcards/CardFileImporter.java
+    visible: true
+    learner_created: true
+  - name: src/flashcards/CardFileExporter.java
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/5349#comment
-status: Unchecked
-record: -1
+status: Solved
+feedback:
+  message: Well done! You've finished the project. Select a new project on <a href="https://hyperskill.org/projects">Hyperskill</a>
+    to continue learning.
+  time: "Sat, 24 Feb 2024 21:02:10 UTC"
+record: 7

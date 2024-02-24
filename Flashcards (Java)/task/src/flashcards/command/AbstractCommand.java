@@ -17,6 +17,12 @@ public abstract class AbstractCommand implements Command {
         this.logger = logger;
     }
 
+    public AbstractCommand(Scanner scanner, Logger logger) {
+        this.scanner = scanner;
+        this.logger = logger;
+        this.cardStorage = null;
+    }
+
     public AbstractCommand(CardStorage cardStorage, Logger logger) {
         this.scanner = null;
         this.cardStorage = cardStorage;
