@@ -21,12 +21,12 @@ The third line is Definition:
 The fourth line is the definition which is also provided by the user
 In this stage we are just laying the foundation for later stages, we'll start using these input values from next stage.
 
-Examples
+### Examples
 Here are some output examples to clarify what the result should look like. The greater-than symbol followed by a space (> ) represents the user input. Note that it's not part of the input.
 
 Example 1.
 
-Card:
+```Card:
 > purchase
 purchase
 Definition:
@@ -40,7 +40,7 @@ cos'(x)
 Definition:
 > -sin(x)
 -sin(x)
-
+```
 
 ## Stage 2/7: What’s on the card?
 ### Description
@@ -59,7 +59,7 @@ Your answer is wrong... if the answer doesn't match the definition;
 Your answer is right! if the answer matches the definition.
 Of course, at this point, the user is unlikely to get the answer wrong, since they’re the ones who just typed in the answer... But don’t worry: right now we're just warming up so that in later stages we could make this a bit more challenging for our users.
 
-Examples
+### Examples
 The greater-than symbol followed by a space (> ) represents the user input. Note that it's not part of the input.
 
 Example 1: the user's answer is correct
@@ -74,7 +74,7 @@ Output:
 Your answer is right!
 Example 2: the user's answer is incorrect
 
-Input (a term, a definition, an answer):
+```Input (a term, a definition, an answer):
 
 > Jetbrains
 > A place for people who love to code
@@ -82,6 +82,7 @@ Input (a term, a definition, an answer):
 Output:
 
 Your answer is wrong...
+```
 
 ## Stage 3/7: Make it your own
 ### Description
@@ -97,9 +98,9 @@ Your program should do the following:
 Get the number of flashcards the user would like to create. To do that, print the line Input the number of cards: as a prompt for the user, and then read the number from the next line.
 Create the defined amount of cards in a loop. To create a flashcard, print the line Card #n: where n is the index number of the card to be created; then read the user's input (the term) from the following line. Then print the line The definition for card #n: and read the user's definition of the term from the next line. Repeat until all the flashcards are created.
 Test the user on their knowledge of the definitions of all terms in the order they were added. To do that with one flashcard, print the line Print the definition of "term": where "term" is the term of the flashcard to be checked, and then read the user's answer from the following line. Make sure to put the term of the flashcard in quotes. Then print the line Correct! if the user's answer is correct, or the line Wrong. The right answer is "definition". if the answer is incorrect, where "definition" is the correct definition. Repeat for all the flashcards in the set.
-Example
+### Example
 The symbol > represents the user input. Note that it's not part of the input.
-
+```
 Input the number of cards:
 > 2
 Card #1:
@@ -117,7 +118,7 @@ Print the definition of "str()":
 > outputs text
 Wrong. The right answer is "converts to a string".
 Note that all your outputs and user inputs should be on separate lines.
-
+```
 
 ## Stage 4/7: A good stack
 ### Description
@@ -133,12 +134,12 @@ Modify your program to behave the following way:
 When the user tries to add a duplicate term, forbid it and output the message The term "term" already exists. Try again: using the term instead of "term". Ask for the term until the user inputs a unique term.
 When the user tries to add a duplicate definition, forbid it and Output the message The definition "definition" already exists. Try again: with the definition instead of "definition". Ask the player to input the definition until the user inputs a unique one.
 When the user enters the wrong definition for the requested term, but this definition is correct for another term, print the appropriate message Wrong. The right answer is "correct answer", but your definition is correct for "term for user's answer". , where "correct answer" is the actual definition for the requested term, and "term for user's answer" is the appropriate term for the user-entered definition.
-Examples
+### Examples
 The symbol > represents the user input. Note that it's not part of the input.
 
 Example 1: the user tries to add duplicated term and definition
 
-Input the number of cards:
+```Input the number of cards:
 > 2
 Card #1:
 > print()
@@ -158,9 +159,10 @@ Correct!
 Print the definition of "str()":
 > converts to a string
 Correct!
+```
 Example 2: the user gives a correct definition for a term that exists, but which is not the term that the program is asking about
 
-Input the number of cards:
+```Input the number of cards:
 > 2
 Card #1:
 > uncle
@@ -177,6 +179,7 @@ Print the definition of "ankle":
 > ???
 Wrong. The right answer is "a part of the body where the foot and the leg meet".
 Note that all your outputs and user inputs should be on separate lines.
+```
 
 ## Stage 5/7: Menu, please!
 ### Description
@@ -186,12 +189,12 @@ In this stage, you will improve the application's interactivity by having it ask
 
 The program should support the following actions:
 
-add a card: add
-remove a card: remove
-load cards from file: import
-save cards to file: export
-ask for definitions of some random cards: ask
-exit the program: exit
+- add a card: add
+- remove a card: remove
+- load cards from file: import
+- save cards to file: export
+- ask for definitions of some random cards: ask
+- exit the program: exit
 You can use any format of separating to store cards in a file; tests do not check the content of the file, but they do check that all the saved flashcards are loaded correctly.
 
 When you load flashcards from a file, you shouldn't erase the cards that aren't in the file. If the imported flashcard already exists, update its definition in the program memory. There won't be any conflict with definitions in the tests.
@@ -207,12 +210,12 @@ import — print the line File name:, read the user's input from the next line, 
 export — request the file name with the line File name: and write all currently available flashcards into this file. Print the message n cards have been saved., where n is the number of cards exported to the file.
 ask — ask the user about the number of cards they want to be asked about and then prompt them for definitions, like in the previous stage.
 exit — print Bye bye! and finish the program.
-Examples
+### Examples
 The symbol > represents the user input. Note that it's not part of the input.
 
 Example 1: the user removes an existing card and tries to remove a non-existent one
 
-Input the action (add, remove, import, export, ask, exit):
+```Input the action (add, remove, import, export, ask, exit):
 > add
 The card:
 > France
@@ -249,9 +252,11 @@ Can't remove "Wakanda": there is no such card.
 Input the action (add, remove, import, export, ask, exit):
 > exit
 Bye bye!
+```
+
 Example 2: the user uses files to import and export their flashcards; definitions of existing cards are updated after import
 
-Input the action (add, remove, import, export, ask, exit):
+```Input the action (add, remove, import, export, ask, exit):
 > import
 File name:
 > ghost_file.txt
@@ -340,6 +345,7 @@ Wrong. The right answer is "ankle", but your definition is correct for "a brothe
 Input the action (add, remove, import, export, ask, exit):
 > exit
 Bye bye!
+```
 Note that all your outputs and user inputs should be on separate lines.
 
 
@@ -364,10 +370,10 @@ hardest card — print a string that contains the term of the card with the high
 reset stats — set the count of mistakes to 0 for all the cards and output the message Card statistics have been reset.
 Update your import and export actions from the previous stage, so that the error count for each flashcard is also imported and exported.
 
-Example
+### Example
 The symbol > represents the user input. Note that it's not part of the input.
 
-Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
+```Input the action (add, remove, import, export, ask, exit, log, hardest card, reset stats):
 > hardest card
 There are no cards with errors.
 
@@ -411,6 +417,7 @@ Input the action (add, remove, import, export, ask, exit, log, hardest card, res
 > exit
 Bye bye!
 Note that all your outputs and user inputs should be on separate lines.
+```
 
 ## Stage 7/7: IMPORTant
 ### Description
@@ -422,7 +429,7 @@ Files are used to save progress and restore it the next time the user runs the p
 If -import IMPORT is passed, where IMPORT is the file name, read the initial card set from the external file and print the message n cards have been loaded. as the first line of the output, where n is the number of cards loaded from the external file. If such an argument is not provided, the set of cards should initially be empty and no message about card loading should be output.
 If -export EXPORT is passed, where EXPORT is the file name, write all cards that are in the program memory into this file after the user has entered exit, and the last line of the output should be n cards have been saved., where n is the number of flashcards in the set.
 Run arguments examples
-java Flashcards -import derivatives.txt
-java Flashcards -export animals.txt
-java Flashcards -import words13june.txt -export words14june.txt
-java Flashcards -export vocab.txt -import vocab.txt 
+`java Flashcards -import derivatives.txt`
+`java Flashcards -export animals.txt`
+`java Flashcards -import words13june.txt -export words14june.txt`
+`java Flashcards -export vocab.txt -import vocab.txt`
