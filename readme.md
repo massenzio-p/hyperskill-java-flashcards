@@ -64,7 +64,7 @@ The greater-than symbol followed by a space (> ) represents the user input. Note
 
 Example 1: the user's answer is correct
 
-Input (a term, then a definition, and, finally, an answer):
+```Input (a term, then a definition, and, finally, an answer):
 
 > print()
 > outputs text
@@ -72,6 +72,8 @@ Input (a term, then a definition, and, finally, an answer):
 Output:
 
 Your answer is right!
+```
+
 Example 2: the user's answer is incorrect
 
 ```Input (a term, a definition, an answer):
