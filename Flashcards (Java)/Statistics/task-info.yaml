@@ -1021,6 +1021,30 @@ files:
     \   \"London\",\n                \"Abuja\",\n                \"Berlin\"\n    \
     \    );\n    }\n    \n}\n\n\n\n\n"
     learner_created: false
+  - name: src/flashcards/Score.java
+    visible: true
+    learner_created: true
+  - name: src/flashcards/command/LogCommand.java
+    visible: true
+    learner_created: true
+  - name: src/flashcards/log/Logger.java
+    visible: true
+    learner_created: true
+  - name: src/flashcards/log/DefaultLogger.java
+    visible: true
+    learner_created: true
+  - name: src/flashcards/command/AbstractCommand.java
+    visible: true
+    learner_created: true
+  - name: src/flashcards/command/HardestCardCommand.java
+    visible: true
+    learner_created: true
+  - name: src/flashcards/command/ResetStatsCommand.java
+    visible: true
+    learner_created: true
 feedback_link: https://hyperskill.org/learn/step/5348#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: "Sat, 24 Feb 2024 20:28:48 UTC"
 record: -1

@@ -1,6 +1,7 @@
 package flashcards.command;
 
 import flashcards.CardStorage;
+import flashcards.log.Logger;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,20 +10,16 @@ import java.util.StringTokenizer;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
-class ImportCommand implements Command {
+class ImportCommand extends AbstractCommand {
 
-    private final CardStorage cardStorage;
-    private final Scanner scanner;
-
-    public ImportCommand(CardStorage cardStorage, Scanner scanner) {
-        this.cardStorage = cardStorage;
-        this.scanner = scanner;
+    protected ImportCommand(Scanner scanner, CardStorage cardStorage, Logger logger) {
+        super(scanner, cardStorage, logger);
     }
 
     @Override
     public int execute(Object... args) {
-        System.out.println("File name:");
-        String fileName = this.scanner.nextLine();
+        logger.println("File name:");
+        String fileName = logger.saveln(this.scanner.nextLine());
         File file = new File(fileName);
         String msg = "File not found";
 
@@ -36,7 +33,7 @@ class ImportCommand implements Command {
             }
         }
 
-        System.out.println(msg);
+        logger.println(msg);
         return 0;
     }
 
@@ -46,7 +43,10 @@ class ImportCommand implements Command {
             fileScanner.tokens()
                     .map(pairToken -> new StringTokenizer(pairToken, ","))
                     .forEach(token -> {
-                        this.cardStorage.addCard(token.nextToken(), token.nextToken());
+                        this.cardStorage.addCard(
+                                token.nextToken(),
+                                token.nextToken(),
+                                Integer.parseInt(token.nextToken()));
                         counter.incrementAndGet();
                     });
             return counter.get();

@@ -1,39 +1,36 @@
 package flashcards.command;
 
+import flashcards.Card;
 import flashcards.CardStorage;
+import flashcards.log.Logger;
 
-import java.util.Map;
 import java.util.Scanner;
 
-class AddCommand implements Command {
+class AddCommand extends AbstractCommand {
 
-    private final CardStorage cardStorage;
-    private final Scanner scanner;
-
-    AddCommand(CardStorage cardStorage, Scanner scanner) {
-        this.cardStorage = cardStorage;
-        this.scanner = scanner;
+    protected AddCommand(Scanner scanner, CardStorage cardStorage, Logger logger) {
+        super(scanner, cardStorage, logger);
     }
 
     @Override
     public int execute(Object... args) {
-        System.out.println("The card");
-        String term = scanner.nextLine();
+        logger.println("The card");
+        String term = logger.saveln(scanner.nextLine());
         if (this.cardStorage.containsTerm(term)) {
-            System.out.printf("The card \"%s\" already exists.%n", term);
+            logger.print(String.format("The card \"%s\" already exists.%n", term));
             return 0;
         }
 
-        System.out.println("The definition of the card:");
-        String definition = scanner.nextLine();
-        String existingTerm = this.cardStorage.getTermForDefinition(definition);
-        if (existingTerm != null) {
-            System.out.printf("The definition \"%s\" already exists.%n", definition);
+        logger.println("The definition of the card:");
+        String definition = logger.saveln(scanner.nextLine());
+        Card existingCard = this.cardStorage.getCardForDefinition(definition);
+        if (existingCard != null) {
+            logger.print(String.format("The definition \"%s\" already exists.%n", definition));
             return 0;
         }
 
         this.cardStorage.addCard(term, definition);
-        System.out.printf("The pair (\"%s\":\"%s\") has been added%n", term, definition);
+        logger.print(String.format("The pair (\"%s\":\"%s\") has been added%n", term, definition));
         return 0;
     }
 }

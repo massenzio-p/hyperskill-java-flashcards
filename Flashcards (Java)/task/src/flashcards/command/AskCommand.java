@@ -1,27 +1,26 @@
 package flashcards.command;
 
+import flashcards.Card;
 import flashcards.CardStorage;
+import flashcards.log.Logger;
 
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Scanner;
 import java.util.Set;
 
-public class AskCommand implements Command {
+class AskCommand extends AbstractCommand {
 
-    private final Scanner scanner;
-    private final CardStorage cardStorage;
-
-    public AskCommand(CardStorage storage, Scanner scanner) {
-        this.scanner = scanner;
-        this.cardStorage = storage;
+    protected AskCommand(Scanner scanner, CardStorage cardStorage, Logger logger) {
+        super(scanner, cardStorage, logger);
     }
 
     @Override
     public int execute(Object... args) {
-        System.out.println("How many times to ask?");
+        logger.println("How many times to ask?");
         int timesToAsk = scanner.nextInt();
         scanner.nextLine();
+        logger.saveln(Integer.toString(timesToAsk));
+
         Set<String> askedTerms = new HashSet<>();
         while (timesToAsk > 0) {
             playRandomCard(askedTerms);
@@ -31,25 +30,31 @@ public class AskCommand implements Command {
     }
 
     private void playRandomCard(Set<String> askedTerms) {
-        Map.Entry<String, String> randomCard = null;
+        Card randomCard;
         do {
             randomCard = this.cardStorage.getRandomCard();
-        } while (askedTerms.contains(randomCard.getKey()));
+        } while (askedTerms.contains(randomCard.term()));
 
-        System.out.printf("Print the definition of \"%s\":%n", randomCard.getKey());
-        String answer = scanner.nextLine();
-
-        if (answer.equals(randomCard.getValue())) {
-            System.out.println("Correct!");
+        logger.print(String.format("Print the definition of \"%s\":%n", randomCard.term()));
+        String answer = logger.saveln(scanner.nextLine());
+        if (answer.equals(randomCard.definition())) {
+            logger.println("Correct!");
         } else {
-            String suitableTerm = cardStorage.getTermForDefinition(answer);
-            String remark = String.format(", but your definition is correct for \"%s\"", suitableTerm);
-            System.out.printf(
+            String remark = "";
+            Card suitableCard = cardStorage.getCardForDefinition(answer);
+
+            if (suitableCard != null) {
+                remark = String.format(", but your definition is correct for \"%s\"", suitableCard.term());
+            }
+
+            String finalMessage = String.format(
                     "Wrong. The right answer is \"%s\"%s.%n",
-                    randomCard.getValue(),
-                    suitableTerm == null ? "" : remark);
+                    randomCard.definition(),
+                    suitableCard == null ? "" : remark);
+            logger.print(finalMessage);
+            randomCard.score().incrementErrorCount();
         }
 
-        askedTerms.add(randomCard.getKey());
+        askedTerms.add(randomCard.term());
     }
 }

@@ -1,21 +1,24 @@
 package flashcards;
 
 import java.util.Collection;
-import java.util.Map;
 
 public interface CardStorage {
 
     boolean containsTerm(String term);
 
-    String getTermForDefinition(String definition);
+    Card getCardForDefinition(String definition);
 
-    String getDefinitionForTerm(String term);
+    Card getCardForTerm(String term);
 
-    void addCard(String term, String definition);
+    void addCard(String term, String definition, int errors);
 
     boolean removeCard(String term);
 
-    Collection<Map.Entry<String, String>> getAllCards();
+    Collection<Card> getAllCards();
 
-    Map.Entry<String, String> getRandomCard();
+    Card getRandomCard();
+
+    void resetAllScore();
+
+    void addCard(String term, String definition);
 }

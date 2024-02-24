@@ -4,51 +4,64 @@ import java.util.*;
 
 public class HashMapCardStorage implements CardStorage {
 
-    private final Map<String, String> termsDefinitions = new LinkedHashMap<>();
-    private final Map<String, String> definitionsTerms = new HashMap<>();
+    private final Map<String, Card> termCardMap = new LinkedHashMap<>();
+    private final Map<String, Card> definitionCardMap = new HashMap<>();
     private final Random random = new Random();
 
     @Override
     public boolean containsTerm(String term) {
-        return this.termsDefinitions.containsKey(term);
+        return this.termCardMap.containsKey(term);
     }
 
     @Override
-    public String getTermForDefinition(String definition) {
-        return this.definitionsTerms.get(definition);
+    public Card getCardForDefinition(String definition) {
+        return this.definitionCardMap.get(definition);
     }
 
     @Override
-    public String getDefinitionForTerm(String term) {
-        return this.termsDefinitions.get(term);
+    public Card getCardForTerm(String term) {
+        return this.termCardMap.get(term);
     }
 
     @Override
     public void addCard(String term, String definition) {
-        this.termsDefinitions.put(term, definition);
-        this.definitionsTerms.put(definition, term);
+        addCard(term, definition, 0);
+    }
+
+    @Override
+    public void addCard(String term, String definition, int errors) {
+        Card newCard = new Card(term, definition, new Score(errors));
+        this.termCardMap.put(term, newCard);
+        this.definitionCardMap.put(definition, newCard);
     }
 
     @Override
     public boolean removeCard(String term) {
-        String definition = this.termsDefinitions.get(term);
-        if (definition == null) {
+        Card card = this.termCardMap.get(term);
+        if (card == null) {
             return false;
         }
-        this.termsDefinitions.remove(term);
-        this.definitionsTerms.remove(definition);
+        this.termCardMap.remove(term);
+        this.definitionCardMap.remove(card.definition());
         return true;
     }
 
     @Override
-    public Collection<Map.Entry<String, String>> getAllCards() {
-        return this.termsDefinitions.entrySet();
+    public Collection<Card> getAllCards() {
+        return this.termCardMap.values();
     }
 
     @Override
-    public Map.Entry<String, String> getRandomCard() {
-        String[] termsArray = termsDefinitions.keySet().toArray(new String[]{});
+    public Card getRandomCard() {
+        String[] termsArray = termCardMap.keySet().toArray(new String[]{});
         String randomTerm = termsArray[this.random.nextInt(termsArray.length)];
-        return Map.entry(randomTerm, termsDefinitions.get(randomTerm));
+        return termCardMap.get(randomTerm);
+    }
+
+    @Override
+    public void resetAllScore() {
+        getAllCards().stream()
+                .map(Card::score)
+                .forEach(score -> score.setErrorsCount(0));
     }
 }

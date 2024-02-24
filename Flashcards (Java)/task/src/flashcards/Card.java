@@ -1,4 +1,4 @@
 package flashcards;
 
-public record Card(String term, String definition) {
+public record Card(String term, String definition, Score score) {
 }
